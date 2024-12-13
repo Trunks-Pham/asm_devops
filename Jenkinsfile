@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'phamminhthao/asm'
-        DOCKER_TAG = 'devops'
+        DOCKER_TAG = 'devopsv2'
     }
 
     stages {
@@ -13,13 +13,15 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
-                }
-            }
+stage('Build Docker Image') {
+    steps {
+        script {
+            sh 'sudo usermod -aG docker jenkins'
+            sh 'sudo service jenkins restart'
+            docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
         }
+    }
+}
 
         stage('Run Tests') {
             steps {
@@ -40,12 +42,12 @@ pipeline {
         stage('Deploy Golang to DEV') {
             steps {
                 echo 'Deploying to DEV...'
-                sh 'docker image pull phamminhthao/asm:devops'
+                sh 'docker image pull phamminhthao/asm:devopsv2'
                 sh 'docker container stop golang-asm || echo "this container does not exist"'
                 sh 'docker network create dev || echo "this network exists"'
                 sh 'echo y | docker container prune '
 
-                sh 'docker container run -d --rm --name server-golang -p 4000:3000 --network dev phamminhthao/asm:devops'
+                sh 'docker container run -d --rm --name server-golang -p 4000:3000 --network dev phamminhthao/asm:devopsv2'
             }
         }
     }
