@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'phamminhthao/asm'
-        DOCKER_TAG = 'devopsv2'
+        DOCKER_TAG = 'devops'
     }
 
     stages {
@@ -41,12 +41,12 @@ pipeline {
         stage('Deploy Golang to DEV') {
             steps {
                 echo 'Deploying to DEV...'
-                sh 'docker image pull phamminhthao/asm:devopsv2'
+                sh 'docker image pull phamminhthao/asm:devops'
                 sh 'docker container stop golang-asm || echo "this container does not exist"'
                 sh 'docker network create dev || echo "this network exists"'
                 sh 'echo y | docker container prune '
 
-                sh 'docker container run -d --rm --name server-golang -p 4000:3000 --network dev phamminhthao/asm:devopsv2'
+                sh 'docker container run -d --rm --name server-golang -p 4000:3000 --network dev phamminhthao/asm:devops'
             }
         }
     }
