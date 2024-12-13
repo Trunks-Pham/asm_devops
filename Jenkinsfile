@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = 'phamminhthao/jenkins'
-        DOCKER_TAG = 'main'
+        DOCKER_IMAGE = 'phamminhthao/asm'
+        DOCKER_TAG = 'devops'
     }
 
     stages {
