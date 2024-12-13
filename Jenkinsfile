@@ -16,8 +16,7 @@ pipeline {
 stage('Build Docker Image') {
     steps {
         script {
-            sh 'sudo usermod -aG docker jenkins'
-            sh 'sudo service jenkins restart'
+            sh 'docker ps'
             docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}")
         }
     }
